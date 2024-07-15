@@ -14,7 +14,7 @@ void input()
 void findPrime(int maxNum)
 {
     primeNumber[1] = 1;
-    for (int i = 2; i <= maxNum; i++)
+    for (int i = 2; i * i <= maxNum; i++)
     {
         if (primeNumber[i] == 0)
         { // 소수라면
