@@ -10,7 +10,7 @@
 #include <vector>
 using namespace std;
 char str[200010];
-int sum[200010][26];
+int sum[26][200010];
 int q;
 void input() {
     cin >> str;
@@ -19,20 +19,13 @@ void input() {
 void solve() {
     int l = strlen(str);
 
-    for (int c = 'a'; c <= 'z'; c++) {
-        if (str[0] == c) {
-            sum[0][c - 'a'] = 1;
-        } else {
-            sum[0][c - 'a'] = 0;
+    for (int i = 0; i < l; i++) {
+        sum[str[i] - 'a'][i] += 1;
+        if (i == 0) {
+            continue;
         }
-    }
-    for (int i = 1; i < l; i++) {
-        for (int c = 'a'; c <= 'z'; c++) {
-            if (str[i] == c) {
-                sum[i][c - 'a'] = sum[i - 1][c - 'a'] + 1;
-            } else {
-                sum[i][c - 'a'] = sum[i - 1][c - 'a'];
-            }
+        for (char c = 'a'; c <= 'z'; c++) {
+            sum[c - 'a'][i] += sum[c - 'a'][i - 1];
         }
     }
     char c;
@@ -40,13 +33,15 @@ void solve() {
     for (int i = 0; i < q; i++) {
         cin >> c >> s >> e;
         if (s == 0) {
-            cout << sum[e][c - 'a'] << '\n';
+            cout << sum[c - 'a'][e] << '\n';
             continue;
         }
-        cout << sum[e][c - 'a'] - sum[s - 1][c - 'a'] << '\n';
+        cout << sum[c - 'a'][e] - sum[c - 'a'][s - 1] << '\n';
     }
 }
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     int tt = 1;
     // cin >> tt;
     while (tt--) {
